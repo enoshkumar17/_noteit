@@ -3,8 +3,16 @@ import { NotesCard } from "../../components/NotesCard";
 import { Sidebar } from "../../components/Sidebar";
 import { UseNotes } from "../../context/notes-context";
 
-export const Archive = () => {
-  const { archivedNotes } = UseNotes();
+export const Bin = () => {
+  const { bin, notesDispatch } = UseNotes();
+
+  const onEmptyBinClick = () => {
+    if (window.confirm("Are you sure you want to permanently delete all notes in the bin?")) {
+      notesDispatch({
+        type: "CLEAR_BIN",
+      });
+    }
+  };
 
   return (
     <>
@@ -12,30 +20,36 @@ export const Archive = () => {
       <main className="flex">
         <Sidebar />
         <div className="p-6 w-full flex flex-col items-center">
-          {archivedNotes && archivedNotes.length > 0 ? (
+          {bin && bin.length > 0 ? (
             <div className="w-full max-w-5xl">
-              <h2 className="text-orange-600 font-bold text-xl mb-4">
-                Archived Notes ({archivedNotes.length})
-              </h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-orange-600 font-bold text-xl">
+                  Bin ({bin.length})
+                </h2>
+                <button
+                  onClick={onEmptyBinClick}
+                  className="px-3 py-1.5 bg-orange-600 text-white rounded hover:bg-orange-700 text-sm font-medium transition-colors"
+                >
+                  Empty Bin
+                </button>
+              </div>
               <div className="flex flex-wrap gap-4">
-                {archivedNotes.map((note) => (
+                {bin.map((note) => (
                   <NotesCard
                     key={note.id}
                     id={note.id}
                     title={note.title}
                     text={note.text}
-                    isPinned={note.isPinned}
-                    isArchived={true}
-                    isImportant={note.isImportant}
+                    inBin={true}
                   />
                 ))}
               </div>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center mt-20 text-orange-400">
-              <span className="material-symbols-outlined text-6xl mb-2">archive</span>
+              <span className="material-symbols-outlined text-6xl mb-2">delete</span>
               <h2 className="text-orange-600 font-semibold text-lg">
-                No notes in Archive
+                Bin is empty
               </h2>
             </div>
           )}

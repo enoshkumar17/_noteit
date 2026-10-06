@@ -1,4 +1,4 @@
-import { useReducer, useContext, createContext, useEffect, useState } from "react";
+import { useReducer, useContext, createContext, useEffect } from "react";
 import { notesReducer } from "../reducers/notesReducers";
 
 const NotesContext = createContext();
@@ -25,8 +25,6 @@ const NotesProvider = ({ children }) => {
   const [{ text, title, notes, archivedNotes, bin }, notesDispatch] =
     useReducer(notesReducer, initialState);
 
-  const [searchQuery, setSearchQuery] = useState("");
-
   // Preserve state to localStorage whenever notes, archivedNotes, or bin change
   useEffect(() => {
     try {
@@ -41,16 +39,7 @@ const NotesProvider = ({ children }) => {
 
   return (
     <NotesContext.Provider
-      value={{
-        text,
-        title,
-        notes,
-        archivedNotes,
-        bin,
-        searchQuery,
-        setSearchQuery,
-        notesDispatch,
-      }}
+      value={{ text, title, notes, archivedNotes, bin, notesDispatch }}
     >
       {children}
     </NotesContext.Provider>

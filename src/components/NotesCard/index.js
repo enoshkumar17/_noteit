@@ -139,8 +139,8 @@ export const NotesCard = ({
               className="p-1 hover:bg-orange-100 rounded"
             >
               <span
-                className={`material-symbols-outlined text-[20px] ${
-                  isImportant ? "filled text-orange-600" : "outlined text-neutral-500"
+                className={`material-symbols-outlined text-[20px] text-orange-600 ${
+                  isImportant ? "filled" : "outlined"
                 }`}
               >
                 label_important
